@@ -4,28 +4,38 @@ namespace BankOcr.Tests;
 
 class ParsingDigits
 {
-    [Test]
-    public void ShouldParse1()
+    [TestCase(
+        " _ \n" +
+        "| |\n" +
+        "|_|",
+        '0'
+    )]
+    [TestCase(
+        "   \n" +
+        "  |\n" +
+        "  |"
+        , '1'
+    )]
+    [TestCase(
+        " _ \n" +
+        "|_|\n" +
+        " _|"
+        , '9'
+    )]
+    public void ShouldParse(string source, char expected)
     {
-        string[] digitLines = {
-            "   ",
-            "  |",
-            "  |"
-        };
+        var parsed = OcrChar.TryParse(source);
 
-        var parsed = OcrChar.TryParse(digitLines);
-
-        parsed.ShouldBe(new OcrChar('1'));
+        parsed.ShouldBe(new OcrChar(expected));
     }
 
     [Test]
     public void ShouldHandleParsingFailures()
     {
-        string[] digitLines = {
-            "!!!",
-            "!!!",
-            "!!!"
-        };
+        string digitLines =
+            "!!!\n" +
+            "!!!\n" +
+            "!!!";
 
         var parsed = OcrChar.TryParse(digitLines);
 
