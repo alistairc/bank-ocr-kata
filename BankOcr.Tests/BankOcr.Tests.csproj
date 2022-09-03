@@ -21,4 +21,9 @@
     <ProjectReference Include="..\BankOcr.Console\BankOcr.Console.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="TestFiles/**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

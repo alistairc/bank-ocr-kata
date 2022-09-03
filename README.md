@@ -4,8 +4,12 @@ This is the code kata, Bank OCR, from here https://code.joejag.com/coding-dojo/b
 
 ## Current State
 
-Currently this is just an empty skeleton.  Current just says "Hello, World!"
+Reads a single digit from a file, and prints it out:
 
+```
+    $ BankOcr.Console "BankOcr.Tests/TestFiles/Digit1.txt"
+    1
+```
 ## Build and Test
 
 This project uses the `dotnet` CLI tooling.  To build and run the tests:
@@ -16,7 +20,7 @@ This project uses the `dotnet` CLI tooling.  To build and run the tests:
 
 You can run the app locally with this
 ```
-    dotnet run --project BankOcr.Console
+    dotnet run --project BankOcr.Console -- "BankOcr.Tests/TestFiles/Digit1.txt"
 ```
 See below for more details of CLI usage
 
