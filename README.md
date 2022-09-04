@@ -4,11 +4,11 @@ This is the code kata, Bank OCR, from here https://code.joejag.com/coding-dojo/b
 
 ## Current State
 
-Reads a single digit from a file, and prints it out:
+Reads a single entry from a file, and prints it out:
 
 ```
-    $ BankOcr.Console "BankOcr.Tests/TestFiles/Digit1.txt"
-    1
+    $ BankOcr.Console "BankOcr.Tests/TestFiles/DigitsOneToNine.txt"
+    123456789
 ```
 ## Build and Test
 

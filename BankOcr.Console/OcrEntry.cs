@@ -9,7 +9,8 @@ public record OcrEntry(OcrChar[] Characters)
         var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
         var rawDigits = Enumerable.Range(0, DigitsInEntry)
-            .Select(digitNo => SelectTextForDigit(lines, digitNo));
+            .Select(digitNo => SelectTextForDigit(lines, digitNo))
+            .TakeWhile(digitText => !string.IsNullOrEmpty(digitText));
 
         var parsedDigits = rawDigits
             .Select(text => OcrChar.TryParse(text))
@@ -25,7 +26,10 @@ public record OcrEntry(OcrChar[] Characters)
 
     static string SelectCharsForDigit(string line, int digitNo)
     {
-        return line.Substring(digitNo * OcrChar.CharacterWidth, OcrChar.CharacterWidth);
+        var startIndex = digitNo * OcrChar.CharacterWidth;
+        return startIndex < line.Length ?
+            line.Substring(startIndex, OcrChar.CharacterWidth)
+            : string.Empty;
     }
 
     static string SelectTextForDigit(string[] lines, int digitNo)

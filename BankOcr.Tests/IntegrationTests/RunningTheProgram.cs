@@ -13,8 +13,8 @@ class RunningTheProgram
         result.StdOutText.ShouldBe("1" + Environment.NewLine);
     }
 
-    [Test, Ignore("Under construction")]
-    public void ParsingARowOfDigits()
+    [Test]
+    public void ParsingASingleEntry()
     {
         var result = RunProgramWithTestFile(KnownTestFiles.DigitsOneToNine);
 
