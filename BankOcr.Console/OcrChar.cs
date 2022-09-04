@@ -2,6 +2,8 @@ namespace BankOcr.Console;
 
 public record OcrChar(char Character)
 {
+    public const int CharacterWidth = 3;
+
     static readonly Dictionary<string, char> KnownDigits = new() {
         {
             " _ \n" +
