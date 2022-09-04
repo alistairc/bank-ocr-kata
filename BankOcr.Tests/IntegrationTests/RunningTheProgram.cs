@@ -1,13 +1,13 @@
 using System.Diagnostics;
 
-namespace BankOcr.Tests;
+namespace BankOcr.Tests.IntegrationTests;
 
 class RunningTheProgram
 {
     [Test]
     public void ParsingADigit()
     {
-        var result = RunProgramWithTestFile(TestFiles.Digit1);
+        var result = RunProgramWithTestFile(KnownTestFiles.Digit1);
 
         result.ExitCode.ShouldBe(0, result.StdErrText);
         result.StdOutText.ShouldBe("1" + Environment.NewLine);
@@ -44,12 +44,6 @@ class RunningTheProgram
         {
             process.Kill();
         }
-    }
-
-    class TestFiles
-    {
-        static readonly string Root = AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string Digit1 = $"{Root}/TestFiles/Digit1.txt";
     }
 
     record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
