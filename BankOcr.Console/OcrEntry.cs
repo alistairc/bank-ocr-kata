@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 namespace BankOcr.Console;
 
 public record OcrEntry(OcrChar[] Characters)
