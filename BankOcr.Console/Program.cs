@@ -6,9 +6,12 @@
 var sourceFile = args[0];
 var inputLines = File.ReadAllLines(sourceFile);
 
-//A bit nasty, forces a read of the whole file
-//but we'll do something smarter once we're dealing with multpile account numbers 
-var allLines = string.Join('\n', inputLines);
+var possibleEntries = inputLines.Chunk(4);
 
-var entry = OcrEntry.ParseCharacters(allLines);
-Console.WriteLine(entry.FormatLine());
+foreach (var entryLines in possibleEntries)
+{
+    var entryText = string.Join('\n', entryLines);
+
+    var entry = OcrEntry.ParseCharacters(entryText);
+    Console.WriteLine(entry.FormatLine());
+}
