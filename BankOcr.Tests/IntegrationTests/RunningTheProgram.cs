@@ -13,6 +13,15 @@ class RunningTheProgram
         result.StdOutText.ShouldBe("1" + Environment.NewLine);
     }
 
+    [Test]
+    public void ParsingASingleEntry()
+    {
+        var result = RunProgramWithTestFile(KnownTestFiles.DigitsOneToNine);
+
+        result.ExitCode.ShouldBe(0, result.StdErrText);
+        result.StdOutText.ShouldBe("123456789" + Environment.NewLine);
+    }
+
     static ProgramResult RunProgramWithTestFile(string filePath)
     {
         var allArgs = $"\"{filePath}\"";

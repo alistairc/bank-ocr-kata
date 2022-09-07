@@ -10,5 +10,5 @@ var inputLines = File.ReadAllLines(sourceFile);
 //but we'll do something smarter once we're dealing with multpile account numbers 
 var allLines = string.Join('\n', inputLines);
 
-//We're ignoring possible parse failures here
-Console.WriteLine(OcrChar.TryParse(allLines)!.Character);
+var entry = OcrEntry.ParseCharacters(allLines);
+Console.WriteLine(entry.FormatLine());
