@@ -30,16 +30,16 @@ class RunningTheProgram
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "BankOcr.Console",
+                FileName = "BankOcr.Console.exe",
                 Arguments = allArgs,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             }
         };
+        process.Start();
         try
         {
-            process.Start();
             process.WaitForExit(10000);
 
             process.HasExited.ShouldBeTrue();
