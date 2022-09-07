@@ -23,6 +23,18 @@ class RunningTheProgram
         result.StdOutText.ShouldBe("123456789" + Environment.NewLine);
     }
 
+    [Test, Ignore("Not implemented yet")]
+    public void ParsingMultipleEntries()
+    {
+        var result = RunProgramWithTestFile(KnownTestFiles.SeveralEntries);
+
+        result.ExitCode.ShouldBe(0, result.StdErrText);
+
+        var outputLines = result.StdOutText.Split('\n');
+        outputLines[0].ShouldBe("111111111");
+        outputLines[8].ShouldBe("999999999");
+    }
+
     record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
 
     static ProgramResult RunProgramWithTestFile(string filePath)
