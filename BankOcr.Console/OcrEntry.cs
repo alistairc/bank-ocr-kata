@@ -1,8 +1,11 @@
+using System.Security.Cryptography;
+
 namespace BankOcr.Console;
 
 public record OcrEntry(OcrChar[] Characters)
 {
     const int DigitsInEntry = 9;
+    static readonly string Padding = new(' ', OcrChar.CharacterWidth);
 
     public static OcrEntry ParseCharacters(string input)
     {
@@ -26,10 +29,16 @@ public record OcrEntry(OcrChar[] Characters)
 
     static string SelectCharsForDigit(string line, int digitNo)
     {
+        // it simplifies things if there's always some trailing space
+        var paddedLine = line + Padding;
+
         var startIndex = digitNo * OcrChar.CharacterWidth;
-        return startIndex < line.Length ?
-            line.Substring(startIndex, OcrChar.CharacterWidth)
-            : string.Empty;
+        if (startIndex < line.Length)
+        {
+            return paddedLine.Substring(startIndex, OcrChar.CharacterWidth);
+        }
+
+        return string.Empty;
     }
 
     static string SelectTextForDigit(string[] lines, int digitNo)
