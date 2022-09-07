@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace BankOcr.Tests.IntegrationTests;
 
@@ -22,24 +23,16 @@ class RunningTheProgram
         result.StdOutText.ShouldBe("123456789" + Environment.NewLine);
     }
 
+    record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
+
     static ProgramResult RunProgramWithTestFile(string filePath)
     {
+        var exeName = GetExeName();
         var allArgs = $"\"{filePath}\"";
 
-        var process = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "BankOcr.Console",
-                Arguments = allArgs,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            }
-        };
+        var process = RunExe(exeName, allArgs);
         try
         {
-            process.Start();
             process.WaitForExit(10000);
 
             process.HasExited.ShouldBeTrue();
@@ -55,5 +48,30 @@ class RunningTheProgram
         }
     }
 
-    record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
+    static Process RunExe(string exeName, string allArgs)
+    {
+        var process = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = exeName,
+                Arguments = allArgs,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            }
+        };
+        process.Start();
+        return process;
+    }
+
+    static string GetExeName()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            return "BankOcr.Console.exe";
+        }
+
+        return "BankOcr.Console";
+    }
 }
