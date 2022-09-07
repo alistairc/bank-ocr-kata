@@ -5,34 +5,28 @@ namespace BankOcr.Tests.IntegrationTests;
 
 class RunningTheProgram
 {
-    [Test]
-    public void ParsingADigit()
-    {
-        var result = RunProgramWithTestFile(KnownTestFiles.Digit1);
+    static readonly string Root = AppDomain.CurrentDomain.BaseDirectory;
+    public static readonly string SeveralEntries = $"{Root}/TestFiles/SeveralEntries.txt";
 
-        result.ExitCode.ShouldBe(0, result.StdErrText);
-        result.StdOutText.ShouldBe("1" + Environment.NewLine);
+    ProgramResult Result { get; set; }
+
+    [OneTimeSetUp]
+    public void RunEndToEnd()
+    {
+        Result = RunProgramWithTestFile(SeveralEntries);
     }
 
     [Test]
-    public void ParsingASingleEntry()
+    public void ShouldExitWithCodeZero()
     {
-        var result = RunProgramWithTestFile(KnownTestFiles.DigitsOneToNine);
-
-        result.ExitCode.ShouldBe(0, result.StdErrText);
-        result.StdOutText.ShouldBe("123456789" + Environment.NewLine);
+        Result.ExitCode.ShouldBe(0, Result.StdErrText);
     }
 
     [Test]
-    public void ParsingMultipleEntries()
+    public void ShouldOutputParsedEntries()
     {
-        var result = RunProgramWithTestFile(KnownTestFiles.SeveralEntries);
-
-        result.ExitCode.ShouldBe(0, result.StdErrText);
-
-        var outputLines = result.StdOutText.Split(Environment.NewLine);
-        outputLines[0].ShouldBe("111111111");
-        outputLines[8].ShouldBe("999999999");
+        Result.StdOutText.ShouldContain("111111111");
+        Result.StdOutText.ShouldContain("999999999");
     }
 
     record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
