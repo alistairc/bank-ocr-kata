@@ -5,22 +5,28 @@ namespace BankOcr.Tests.IntegrationTests;
 
 class RunningTheProgram
 {
-    [Test]
-    public void ParsingADigit()
-    {
-        var result = RunProgramWithTestFile(KnownTestFiles.Digit1);
+    static readonly string Root = AppDomain.CurrentDomain.BaseDirectory;
+    public static readonly string SeveralEntries = $"{Root}/TestFiles/SeveralEntries.txt";
 
-        result.ExitCode.ShouldBe(0, result.StdErrText);
-        result.StdOutText.ShouldBe("1" + Environment.NewLine);
+    ProgramResult Result { get; set; }
+
+    [OneTimeSetUp]
+    public void RunEndToEnd()
+    {
+        Result = RunProgramWithTestFile(SeveralEntries);
     }
 
     [Test]
-    public void ParsingASingleEntry()
+    public void ShouldExitWithCodeZero()
     {
-        var result = RunProgramWithTestFile(KnownTestFiles.DigitsOneToNine);
+        Result.ExitCode.ShouldBe(0, Result.StdErrText);
+    }
 
-        result.ExitCode.ShouldBe(0, result.StdErrText);
-        result.StdOutText.ShouldBe("123456789" + Environment.NewLine);
+    [Test]
+    public void ShouldOutputParsedEntries()
+    {
+        Result.StdOutText.ShouldContain("111111111");
+        Result.StdOutText.ShouldContain("999999999");
     }
 
     record ProgramResult(int ExitCode, string StdOutText, string StdErrText);

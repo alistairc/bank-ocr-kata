@@ -5,10 +5,6 @@
 
 var sourceFile = args[0];
 var inputLines = File.ReadAllLines(sourceFile);
+var output = Console.Out;
 
-//A bit nasty, forces a read of the whole file
-//but we'll do something smarter once we're dealing with multpile account numbers 
-var allLines = string.Join('\n', inputLines);
-
-var entry = OcrEntry.ParseCharacters(allLines);
-Console.WriteLine(entry.FormatLine());
+OcrEntryFile.ProcessInputText(inputLines, output);

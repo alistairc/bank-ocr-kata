@@ -29,5 +29,4 @@ class ParsingAnEntry
 
         entry.FormatLine().ShouldBe("1");
     }
-
 }

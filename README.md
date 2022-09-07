@@ -4,11 +4,14 @@ This is the code kata, Bank OCR, from here https://code.joejag.com/coding-dojo/b
 
 ## Current State
 
-Reads a single entry from a file, and prints it out:
+Reads a entries from a file, and prints them out
 
 ```
-    $ BankOcr.Console "BankOcr.Tests/TestFiles/DigitsOneToNine.txt"
-    123456789
+    $ BankOcr.Console "BankOcr.Tests/TestFiles/SeveralEntries.txt"
+    111111111
+    222222222
+    333333333
+    .....
 ```
 ## Build and Test
 
@@ -20,7 +23,7 @@ This project uses the `dotnet` CLI tooling.  To build and run the tests:
 
 You can run the app locally with this
 ```
-    dotnet run --project BankOcr.Console -- "BankOcr.Tests/TestFiles/Digit1.txt"
+    dotnet run --project BankOcr.Console -- "BankOcr.Tests/TestFiles/SeveralEntries.txt"
 ```
 See below for more details of CLI usage
 
@@ -44,7 +47,3 @@ Main App:
 Tests:
 - NUnit 
 - Shouldly
-
-## CLI usage
-
-TODO: Fill this out once there's something worth running!
