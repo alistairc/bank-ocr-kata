@@ -18,6 +18,19 @@ class ParsingAnEntry
     }
 
     [Test]
+    public void ShouldNotLimitLengthOfEntries()
+    {
+        var input =
+            "    _  _     _  _  _  _  _     _  _     _  _  _  _  _ \n" +
+            "  | _| _||_||_ |_   ||_||_|  | _| _||_||_ |_   ||_||_|\n" +
+            "  ||_  _|  | _||_|  ||_| _|  ||_  _|  | _||_|  ||_| _|\n";
+
+        var entry = OcrEntry.ParseCharacters(input);
+
+        entry.FormatLine().ShouldBe("123456789123456789");
+    }
+
+    [Test]
     public void ShouldParseASingleDigit()
     {
         var input =
@@ -28,5 +41,58 @@ class ParsingAnEntry
         var entry = OcrEntry.ParseCharacters(input);
 
         entry.FormatLine().ShouldBe("1");
+    }
+
+    [Test]
+    public void ShouldTolerateBlankEntries()
+    {
+        var input =
+            "\n" +
+            "\n" +
+            "\n";
+
+        var entry = OcrEntry.ParseCharacters(input);
+
+        entry.FormatLine().ShouldBe(string.Empty);
+    }
+
+    [Test]
+    public void ShouldTolerateMissingTrailingSpaces()
+    {
+        // first and third line are short
+        var input =
+            " _\n" +
+            " _|\n" +
+            "|_\n";
+
+        var entry = OcrEntry.ParseCharacters(input);
+
+        entry.FormatLine().ShouldBe("2");
+    }
+
+    [Test]
+    public void ShouldTolerateExtraTrailingSpaces()
+    {
+        var input =
+            " _                     \n" +
+            " _|\n" +
+            "|_      \n";
+
+        var entry = OcrEntry.ParseCharacters(input);
+
+        entry.FormatLine().ShouldBe("2");
+    }
+
+    [Test]
+    public void ShouldTolerateExtraBlankLines()
+    {
+        var input =
+            " _\n" +
+            " _|\n" +
+            "|_\n\n\n";
+
+        var entry = OcrEntry.ParseCharacters(input);
+
+        entry.FormatLine().ShouldBe("2");
     }
 }
