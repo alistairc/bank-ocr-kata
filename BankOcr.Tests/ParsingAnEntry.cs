@@ -18,6 +18,19 @@ class ParsingAnEntry
     }
 
     [Test]
+    public void ShouldNotLimitLengthOfEntries()
+    {
+        var input =
+            "    _  _     _  _  _  _  _     _  _     _  _  _  _  _ \n" +
+            "  | _| _||_||_ |_   ||_||_|  | _| _||_||_ |_   ||_||_|\n" +
+            "  ||_  _|  | _||_|  ||_| _|  ||_  _|  | _||_|  ||_| _|\n";
+
+        var entry = OcrEntry.ParseCharacters(input);
+
+        entry.FormatLine().ShouldBe("123456789123456789");
+    }
+
+    [Test]
     public void ShouldParseASingleDigit()
     {
         var input =

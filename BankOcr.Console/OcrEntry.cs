@@ -4,16 +4,15 @@ namespace BankOcr.Console;
 
 public record OcrEntry(OcrChar[] Characters)
 {
-    const int DigitsInEntry = 9;
     static readonly string Padding = new(' ', OcrChar.CharacterWidth);
 
     public static OcrEntry ParseCharacters(string input)
     {
         var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
-        var rawDigits = Enumerable.Range(0, DigitsInEntry)
+        var rawDigits = Enumerable.Range(0, int.MaxValue)
             .Select(digitNo => SelectTextForDigit(lines, digitNo))
-            .TakeWhile(digitText => !string.IsNullOrEmpty(digitText));
+            .TakeWhile(digitText => !string.IsNullOrWhiteSpace(digitText));
 
         var parsedDigits = rawDigits
             .Select(text => OcrChar.TryParse(text))
