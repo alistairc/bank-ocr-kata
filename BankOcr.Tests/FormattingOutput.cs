@@ -25,8 +25,8 @@ class FormattingOutput
     {
         var entries = new[]
         {
-            OcrEntry.FromString("invalid"), 
-            OcrEntry.FromString("987654321")
+            OcrEntry.FromString("123"), 
+            OcrEntry.FromString("000000000")
         };
 
         var output = AccountNumberReport.ForEntries(entries).ToArray();
