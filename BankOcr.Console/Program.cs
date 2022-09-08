@@ -8,7 +8,12 @@ var sourceFile = args[0];
 var inputLines = StreamLines(sourceFile);
 var output = Console.Out;
 
-OcrEntryFile.ProcessInputText(inputLines, output);
+var entries = OcrEntryFile.ParseEntries(inputLines);
+
+foreach (var entry in entries)
+{
+    output.WriteLine(entry.AccountNumber);
+}
 
 static IEnumerable<string> StreamLines(string sourceFile)
 {

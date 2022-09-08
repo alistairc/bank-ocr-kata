@@ -14,7 +14,7 @@ class ParsingAnEntry
 
         var entry = OcrEntry.ParseCharacters(input);
 
-        entry.FormatLine().ShouldBe("123456789");
+        entry.AccountNumber.ShouldBe("123456789");
     }
 
     [Test]
@@ -27,7 +27,7 @@ class ParsingAnEntry
 
         var entry = OcrEntry.ParseCharacters(input);
 
-        entry.FormatLine().ShouldBe("123456789123456789");
+        entry.AccountNumber.ShouldBe("123456789123456789");
     }
 
     [Test]
@@ -40,7 +40,7 @@ class ParsingAnEntry
 
         var entry = OcrEntry.ParseCharacters(input);
 
-        entry.FormatLine().ShouldBe("1");
+        entry.AccountNumber.ShouldBe("1");
     }
 
     [Test]
@@ -53,7 +53,8 @@ class ParsingAnEntry
 
         var entry = OcrEntry.ParseCharacters(input);
 
-        entry.FormatLine().ShouldBe(string.Empty);
+        entry.
+        AccountNumber.ShouldBe(string.Empty);
     }
 
     [Test]
@@ -67,7 +68,7 @@ class ParsingAnEntry
 
         var entry = OcrEntry.ParseCharacters(input);
 
-        entry.FormatLine().ShouldBe("2");
+        entry.AccountNumber.ShouldBe("2");
     }
 
     [Test]
@@ -80,7 +81,7 @@ class ParsingAnEntry
 
         var entry = OcrEntry.ParseCharacters(input);
 
-        entry.FormatLine().ShouldBe("2");
+        entry.AccountNumber.ShouldBe("2");
     }
 
     [Test]
@@ -93,6 +94,6 @@ class ParsingAnEntry
 
         var entry = OcrEntry.ParseCharacters(input);
 
-        entry.FormatLine().ShouldBe("2");
+        entry.AccountNumber.ShouldBe("2");
     }
 }

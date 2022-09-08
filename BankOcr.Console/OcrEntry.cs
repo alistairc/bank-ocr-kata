@@ -19,10 +19,7 @@ public record OcrEntry(OcrChar[] Characters)
         return new OcrEntry(parsedDigits.ToArray()!);
     }
 
-    public string FormatLine()
-    {
-        return new string(Characters.Select(c => c.Character).ToArray());
-    }
+    public string AccountNumber => new string(Characters.Select(c => c.Character).ToArray());
 
     static string SelectCharsForDigit(string line, int digitNo)
     {
