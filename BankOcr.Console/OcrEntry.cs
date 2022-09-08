@@ -30,8 +30,28 @@ public record OcrEntry(OcrChar[] Characters)
 
     public bool ValidateAccountNumber()
     {
-        return Characters.Length == 9;
+        return Characters.Length == 9 && ChecksumIsValid();
     }
+
+    bool ChecksumIsValid()
+    {
+        var digits = Characters.Select(c => c.Digit).ToArray();
+
+        var sum =
+            (digits[8] * 1) +
+            (digits[7] * 2) +
+            (digits[6] * 3) +
+            (digits[5] * 4) +
+            (digits[4] * 5) +
+            (digits[3] * 6) +
+            (digits[2] * 7) +
+            (digits[1] * 8) +
+            (digits[0] * 9);
+
+        var checksum = sum % 11;
+        return checksum == 0;
+    }
+
 
     static string SelectCharsForDigit(string line, int digitNo)
     {

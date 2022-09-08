@@ -1,8 +1,28 @@
 namespace BankOcr.Console;
 
-public record OcrChar(char Character)
+public record OcrChar
 {
     public const int CharacterWidth = 3;
+
+    public OcrChar(char character)
+    {
+        if (!char.IsDigit(character))
+        {
+            throw new ArgumentOutOfRangeException(nameof(character), "Must be a digit");
+        }
+
+        Character = character;
+    }
+
+    public char Character { get; init; }
+    public int Digit => int.Parse(Character.ToString());
+
+    public static OcrChar? TryParse(string digitText)
+    {
+        var found = KnownDigits.TryGetValue(digitText, out var character);
+
+        return found ? new OcrChar(character) : null;
+    }
 
     static readonly Dictionary<string, char> KnownDigits = new() {
         {
@@ -66,11 +86,4 @@ public record OcrChar(char Character)
             , '9'
         }
     };
-
-    public static OcrChar? TryParse(string digitText)
-    {
-        var found = KnownDigits.TryGetValue(digitText, out var character);
-
-        return found ? new OcrChar(character) : null;
-    }
 }
