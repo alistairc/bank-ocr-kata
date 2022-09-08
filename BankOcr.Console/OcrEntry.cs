@@ -4,6 +4,13 @@ public record OcrEntry(OcrChar[] Characters)
 {
     static readonly string Padding = new(' ', OcrChar.CharacterWidth);
 
+    // Convenience factory method, mainly for tests
+    public static OcrEntry FromString(string entryText)
+    {
+        var characters = entryText.Select(chr => new OcrChar(chr)).ToArray();
+        return new OcrEntry(characters);
+    }
+
     public static OcrEntry ParseCharacters(string input)
     {
         var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);

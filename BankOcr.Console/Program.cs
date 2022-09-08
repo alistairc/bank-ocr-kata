@@ -9,10 +9,11 @@ var inputLines = StreamLines(sourceFile);
 var output = Console.Out;
 
 var entries = OcrEntryFile.ParseEntries(inputLines);
+var lines = AccountNumberReport.ForEntries(entries);
 
-foreach (var entry in entries)
+foreach (var line in lines)
 {
-    output.WriteLine(entry.AccountNumber);
+    output.WriteLine(line);
 }
 
 static IEnumerable<string> StreamLines(string sourceFile)
