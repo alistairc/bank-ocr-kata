@@ -28,6 +28,11 @@ public record OcrEntry(OcrChar[] Characters)
 
     public string AccountNumber => new string(Characters.Select(c => c.Character).ToArray());
 
+    public bool ValidateAccountNumber()
+    {
+        return Characters.Length == 9;
+    }
+
     static string SelectCharsForDigit(string line, int digitNo)
     {
         // it simplifies things if there's always some trailing space
