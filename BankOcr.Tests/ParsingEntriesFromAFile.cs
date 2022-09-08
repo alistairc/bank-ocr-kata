@@ -22,11 +22,9 @@ class ParsingEntriesFromAFile
             " _| _| _| _| _| _| _| _| _|",
             ""
         };
-        var outputWriter = new StringWriter();
-        OcrEntryFile.ProcessInputText(lines, outputWriter);
+        var entries = OcrEntryFile.ParseEntries(lines).ToArray();
 
-        var outputLines = outputWriter.ToString().Split(Environment.NewLine);
-        outputLines[0].ShouldBe("111111111");
-        outputLines[2].ShouldBe("333333333");
+        entries[0].AccountNumber.ShouldBe("111111111");
+        entries[2].AccountNumber.ShouldBe("333333333");
     }
 }

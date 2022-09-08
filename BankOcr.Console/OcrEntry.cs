@@ -4,6 +4,13 @@ public record OcrEntry(OcrChar[] Characters)
 {
     static readonly string Padding = new(' ', OcrChar.CharacterWidth);
 
+    // Convenience factory method, mainly for tests
+    public static OcrEntry FromString(string entryText)
+    {
+        var characters = entryText.Select(chr => new OcrChar(chr)).ToArray();
+        return new OcrEntry(characters);
+    }
+
     public static OcrEntry ParseCharacters(string input)
     {
         var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
@@ -19,9 +26,11 @@ public record OcrEntry(OcrChar[] Characters)
         return new OcrEntry(parsedDigits.ToArray()!);
     }
 
-    public string FormatLine()
+    public string AccountNumber => new string(Characters.Select(c => c.Character).ToArray());
+
+    public bool ValidateAccountNumber()
     {
-        return new string(Characters.Select(c => c.Character).ToArray());
+        return Characters.Length == 9;
     }
 
     static string SelectCharsForDigit(string line, int digitNo)
