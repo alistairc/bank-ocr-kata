@@ -24,9 +24,9 @@ class ParsingDigits
     )]
     public void ShouldParse(string source, char expected)
     {
-        var parsed = OcrChar.TryParse(TextRectangle.FromString(source));
+        var parsed = OcrDigit.TryParse(TextRectangle.FromString(source));
 
-        parsed.ShouldBe(new OcrChar(expected));
+        parsed.ShouldBe(new OcrDigit(expected));
     }
 
     [Test]
@@ -37,7 +37,7 @@ class ParsingDigits
             "!!!\n" +
             "!!!";
 
-        var parsed = OcrChar.TryParse(TextRectangle.FromString(digitLines));
+        var parsed = OcrDigit.TryParse(TextRectangle.FromString(digitLines));
 
         parsed.ShouldBeNull();
     }

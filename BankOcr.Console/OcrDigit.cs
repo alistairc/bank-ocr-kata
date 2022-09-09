@@ -1,11 +1,11 @@
 namespace BankOcr.Console;
 
-public record OcrChar
+public record OcrDigit
 {
     public const int CharacterWidth = 3;
     public const int CharacterHeight = 3;
 
-    public OcrChar(char character)
+    public OcrDigit(char character)
     {
         if (!char.IsDigit(character))
         {
@@ -18,11 +18,11 @@ public record OcrChar
     public char Character { get; init; }
     public int Digit => int.Parse(Character.ToString());
 
-    public static OcrChar? TryParse(TextRectangle digitText)
+    public static OcrDigit? TryParse(TextRectangle digitText)
     {
         var found = KnownDigits.TryGetValue(digitText.MultiLineText, out var character);
 
-        return found ? new OcrChar(character) : null;
+        return found ? new OcrDigit(character) : null;
     }
 
     static readonly Dictionary<string, char> KnownDigits = new() {

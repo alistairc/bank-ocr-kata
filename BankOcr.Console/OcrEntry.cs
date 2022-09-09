@@ -6,7 +6,7 @@ public record OcrEntry
     public static OcrEntry FromAccountNumber(string entryText)
     {
         var characters = entryText
-            .Select(chr => chr == '?' ? null : new OcrChar(chr))
+            .Select(chr => chr == '?' ? null : new OcrDigit(chr))
             .ToArray();
         return Validate(characters);
     }
@@ -17,7 +17,7 @@ public record OcrEntry
             .Select(digitNo => SelectDigit(input, digitNo))
             .TakeWhile(digitText => !digitText.IsBlank);
 
-        var parsedDigits = rawDigits.Select(OcrChar.TryParse);
+        var parsedDigits = rawDigits.Select(OcrDigit.TryParse);
 
         return Validate(parsedDigits.ToArray());
     }
@@ -31,7 +31,7 @@ public record OcrEntry
         AccountNumber = accountNumber;
     }
 
-    static OcrEntry Validate(OcrChar?[] characters)
+    static OcrEntry Validate(OcrDigit?[] characters)
     {
         var parsedCharacters = characters.Where(c => c != null).ToArray();
         var isValid = parsedCharacters.Length == 9 && ChecksumIsValid(parsedCharacters!);
@@ -39,7 +39,7 @@ public record OcrEntry
         return new OcrEntry(isValid, accountNumber);
     }
 
-    static bool ChecksumIsValid(IEnumerable<OcrChar> parsedCharacters)
+    static bool ChecksumIsValid(IEnumerable<OcrDigit> parsedCharacters)
     {
         var digits = parsedCharacters.Select(c => c.Digit).ToArray();
 
@@ -60,7 +60,7 @@ public record OcrEntry
     
     static TextRectangle SelectDigit(TextRectangle source, int digitNo)
     {
-        var startIndex = digitNo * OcrChar.CharacterWidth;
-        return source.Select(startIndex, 0, OcrChar.CharacterWidth, OcrChar.CharacterHeight);
+        var startIndex = digitNo * OcrDigit.CharacterWidth;
+        return source.Select(startIndex, 0, OcrDigit.CharacterWidth, OcrDigit.CharacterHeight);
     }
 }
