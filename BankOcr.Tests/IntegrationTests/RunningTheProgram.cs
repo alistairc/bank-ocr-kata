@@ -6,7 +6,9 @@ namespace BankOcr.Tests.IntegrationTests;
 class RunningTheProgram
 {
     static readonly string Root = AppDomain.CurrentDomain.BaseDirectory;
-    public static readonly string SeveralEntries = $"{Root}/TestFiles/SeveralEntries.txt";
+    static readonly string SeveralEntries = $"{Root}/TestFiles/SeveralEntries.txt";
+    static readonly string OutputFilePath = $"{Root}output.txt";
+
 
     ProgramResult Result { get; set; }
 
@@ -25,16 +27,24 @@ class RunningTheProgram
     [Test]
     public void ShouldOutputParsedEntries()
     {
-        Result.StdOutText.ShouldContain("111111111");
-        Result.StdOutText.ShouldContain("999999999");
+        Result.StdOutText.ShouldContain("111111111 ERR");
+        Result.StdOutText.ShouldContain("999999999 ERR");
+    }
+
+    [Test]
+    public void ShouldOutputResultsToAFile()
+    {
+        var fileContents = File.ReadAllText(OutputFilePath);
+        fileContents.ShouldContain("111111111 ERR");
+        fileContents.ShouldContain("999999999 ERR");
     }
 
     record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
 
-    static ProgramResult RunProgramWithTestFile(string filePath)
+    static ProgramResult RunProgramWithTestFile(string sourceFilePath)
     {
         var exeName = GetExeName();
-        var allArgs = $"\"{filePath}\"";
+        var allArgs = $"\"{sourceFilePath}\" \"{OutputFilePath}\"";
 
         var process = RunExe(exeName, allArgs);
         try

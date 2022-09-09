@@ -1,17 +1,18 @@
-# bank-ocr-kata
+	# bank-ocr-kata
 
 This is the code kata, Bank OCR, from here https://code.joejag.com/coding-dojo/bank-ocr/, in C#
 
 ## Current State
 
-Reads a entries from a file, and prints them out
+Stories 1, 2 & 3 complete.  Reads a entries from a file, validates them, and and prints out a report.
+Output is to the console and also a file (second arg)
 
 ```
-    $ BankOcr.Console "BankOcr.Tests/TestFiles/SeveralEntries.txt"
-    111111111
-    222222222
-    333333333
-    .....
+    $ BankOcr.Console "BankOcr.Tests/TestFiles/MixedValidationStatus.txt" "output.txt"
+	000000051
+	49006771? ILL
+	123456789
+	012345678 ERR
 ```
 ## Build and Test
 
@@ -23,7 +24,7 @@ This project uses the `dotnet` CLI tooling.  To build and run the tests:
 
 You can run the app locally with this
 ```
-    dotnet run --project BankOcr.Console -- "BankOcr.Tests/TestFiles/SeveralEntries.txt"
+    dotnet run --project BankOcr.Console -- "BankOcr.Tests/TestFiles/MixedValidationStatus.txt" "output.txt"
 ```
 See below for more details of CLI usage
 
