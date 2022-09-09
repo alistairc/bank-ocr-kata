@@ -15,13 +15,13 @@ public record OcrEntry
 
     public static OcrEntry ParseCharacters(TextRectangle input)
     {
-        var lines = input.MultiLineText.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        var lines = input.MultiLineText.Split('\n');
 
         var rawDigits = Enumerable.Range(0, int.MaxValue)
             .Select(digitNo => SelectTextForDigit(lines, digitNo))
             .TakeWhile(digitText => !string.IsNullOrWhiteSpace(digitText));
 
-        var parsedDigits = rawDigits.Select(selection => OcrChar.TryParse(new TextRectangle(selection)));
+        var parsedDigits = rawDigits.Select(selection => OcrChar.TryParse(TextRectangle.FromString(selection)));
 
         return Validate(parsedDigits.ToArray());
     }
@@ -78,7 +78,7 @@ public record OcrEntry
 
     static string SelectTextForDigit(string[] lines, int digitNo)
     {
-        var digitLines = lines.Select(line => SelectCharsForDigit(line, digitNo));
+        var digitLines = lines.Take(3).Select(line => SelectCharsForDigit(line, digitNo));
         return string.Join('\n', digitLines);
     }
 }
