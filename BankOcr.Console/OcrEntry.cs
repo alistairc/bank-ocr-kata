@@ -2,8 +2,6 @@ namespace BankOcr.Console;
 
 public record OcrEntry
 {
-    static readonly string Padding = new(' ', OcrChar.CharacterWidth);
-
     // Convenience factory method, mainly for tests
     public static OcrEntry FromAccountNumber(string entryText)
     {
@@ -13,13 +11,11 @@ public record OcrEntry
         return Validate(characters);
     }
 
-    public static OcrEntry ParseCharacters(string input)
+    public static OcrEntry ParseCharacters(TextRectangle input)
     {
-        var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-
         var rawDigits = Enumerable.Range(0, int.MaxValue)
-            .Select(digitNo => SelectTextForDigit(lines, digitNo))
-            .TakeWhile(digitText => !string.IsNullOrWhiteSpace(digitText));
+            .Select(digitNo => SelectDigit(input, digitNo))
+            .TakeWhile(digitText => !digitText.IsBlank);
 
         var parsedDigits = rawDigits.Select(OcrChar.TryParse);
 
@@ -43,7 +39,7 @@ public record OcrEntry
         return new OcrEntry(isValid, accountNumber);
     }
 
-    static bool ChecksumIsValid(OcrChar[] parsedCharacters)
+    static bool ChecksumIsValid(IEnumerable<OcrChar> parsedCharacters)
     {
         var digits = parsedCharacters.Select(c => c.Digit).ToArray();
 
@@ -62,23 +58,9 @@ public record OcrEntry
         return checksum == 0;
     }
     
-    static string SelectCharsForDigit(string line, int digitNo)
+    static TextRectangle SelectDigit(TextRectangle source, int digitNo)
     {
-        // it simplifies things if there's always some trailing space
-        var paddedLine = line + Padding;
-
         var startIndex = digitNo * OcrChar.CharacterWidth;
-        if (startIndex < line.Length)
-        {
-            return paddedLine.Substring(startIndex, OcrChar.CharacterWidth);
-        }
-
-        return string.Empty;
-    }
-
-    static string SelectTextForDigit(string[] lines, int digitNo)
-    {
-        var digitLines = lines.Select(line => SelectCharsForDigit(line, digitNo));
-        return string.Join('\n', digitLines);
+        return source.Select(startIndex, 0, OcrChar.CharacterWidth, OcrChar.CharacterHeight);
     }
 }

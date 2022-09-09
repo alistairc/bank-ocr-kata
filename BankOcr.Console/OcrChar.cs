@@ -3,6 +3,7 @@ namespace BankOcr.Console;
 public record OcrChar
 {
     public const int CharacterWidth = 3;
+    public const int CharacterHeight = 3;
 
     public OcrChar(char character)
     {
@@ -17,9 +18,9 @@ public record OcrChar
     public char Character { get; init; }
     public int Digit => int.Parse(Character.ToString());
 
-    public static OcrChar? TryParse(string digitText)
+    public static OcrChar? TryParse(TextRectangle digitText)
     {
-        var found = KnownDigits.TryGetValue(digitText, out var character);
+        var found = KnownDigits.TryGetValue(digitText.MultiLineText, out var character);
 
         return found ? new OcrChar(character) : null;
     }
