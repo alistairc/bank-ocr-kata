@@ -1,8 +1,8 @@
 using BankOcr.Console;
 
-namespace BankOcr.Tests;
+namespace BankOcr.Tests.TextRectangles;
 
-class SelectingRectanglesOfText
+class ParsingFromString
 {
     [Test]
     public void ShouldParseAnEmptyString()
@@ -51,7 +51,7 @@ class SelectingRectanglesOfText
     public void ShouldUseWidthOfLongestLine()
     {
         var selection = TextRectangle.FromString(
-            "short\n" + 
+            "short\n" +
             "longer line"
         );
 
@@ -63,13 +63,13 @@ class SelectingRectanglesOfText
     public void ShouldPadLinesWithSpacesToEqualLength()
     {
         var selection = TextRectangle.FromString(
-            "short\n" + 
+            "short\n" +
             "longer line\n" +
             ""
         );
 
         selection.MultiLineText.ShouldBe(
-            "short      \n" + 
+            "short      \n" +
             "longer line\n" +
             "           "
         );
