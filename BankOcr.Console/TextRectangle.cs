@@ -23,12 +23,13 @@ public record TextRectangle
         return FromLines(lines);
     }
 
-    private static TextRectangle FromLines(string[] lines)
+    public static TextRectangle FromLines(string[] lines)
     {
-        if (lines.Length==0)
+        if (lines.Length == 0)
         {
             return TextRectangle.Empty;
         }
+
         var width = lines.Max(line => line.Length);
         var height = lines.Length;
         var padded = lines.Select(line => line.PadRight(width)).ToArray();
@@ -51,7 +52,7 @@ public record TextRectangle
         return TextRectangle.FromLines(selected.ToArray());
     }
 
-    private static IEnumerable<string> PadToSize(IEnumerable<string> lines, int width, int height)
+    static IEnumerable<string> PadToSize(IEnumerable<string> lines, int width, int height)
     {
         return lines
             .Concat(Enumerable.Repeat(string.Empty, height))  // make sure there are enough lines
