@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace BankOcr.Console;
 
 public record OcrEntry
@@ -33,16 +35,34 @@ public record OcrEntry
 
     static OcrEntry Validate(OcrDigit?[] digits)
     {
-        var parsedDigits = digits.Where(c => c != null).ToArray();
-        var isValid = parsedDigits.Length == 9 && ChecksumIsValid(parsedDigits!);
-        var validationStatus = isValid ? EntryValidationStatus.Ok : EntryValidationStatus.Invalid;
-
+        var validationStatus = GetStatus(digits);
         var accountNumber = new string(digits.Select(d => d?.Character ?? '?').ToArray());
         return new OcrEntry(validationStatus, accountNumber);
     }
 
-    static bool ChecksumIsValid(IEnumerable<OcrDigit> parsedDigits)
+    static EntryValidationStatus GetStatus(OcrDigit?[] digits)
     {
+        OcrDigit[] parsedDigits = digits
+            .Where(c => c != null)
+            .ToArray()!;
+
+        if (parsedDigits.Length < digits.Length)
+        {
+            return EntryValidationStatus.Illegible;
+        }
+
+        if (ChecksumIsValid(parsedDigits))
+        {
+            return EntryValidationStatus.Ok;
+        }
+
+        return EntryValidationStatus.Invalid;
+    }
+
+
+    static bool ChecksumIsValid(IReadOnlyCollection<OcrDigit> parsedDigits)
+    {
+        if (parsedDigits.Count != 9) { return false; }
         var digits = parsedDigits.Select(c => c.Digit).ToArray();
 
         var sum =

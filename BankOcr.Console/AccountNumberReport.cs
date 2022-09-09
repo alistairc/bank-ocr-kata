@@ -15,16 +15,12 @@ public static class AccountNumberReport
 
     static string GetValidationSuffix(OcrEntry entry)
     {
-        if (entry.AccountNumber.Contains('?'))
+        return entry.ValidationStatus switch
         {
-            return " ILL";
-        }
-
-        if (entry.ValidationStatus == EntryValidationStatus.Invalid)
-        {
-            return " ERR";
-        }
-
-        return string.Empty;
+            EntryValidationStatus.Ok => string.Empty,
+            EntryValidationStatus.Illegible => " ILL",
+            EntryValidationStatus.Invalid => " ERR",
+            _ => throw new ArgumentOutOfRangeException(nameof(entry), entry.ValidationStatus.ToString())
+        };
     }
 }

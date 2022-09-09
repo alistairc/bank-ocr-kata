@@ -44,4 +44,14 @@ class EntryValidation
             .ValidationStatus
             .ShouldBe(EntryValidationStatus.Invalid);
     }
+
+    [TestCase("1?2")]
+    [TestCase("000000?00")]
+    [TestCase("012345678?")]
+    public void EntriesWithUnparseableCharactersShouldBeIllegible(string entryText)
+    {
+        OcrEntry.FromAccountNumber(entryText)
+            .ValidationStatus
+            .ShouldBe(EntryValidationStatus.Illegible);
+    }
 }
