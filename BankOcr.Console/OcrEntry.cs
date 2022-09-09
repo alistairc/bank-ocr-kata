@@ -5,13 +5,13 @@ public record OcrEntry
     // Convenience factory method, mainly for tests
     public static OcrEntry FromAccountNumber(string entryText)
     {
-        var characters = entryText
+        var digits = entryText
             .Select(chr => chr == '?' ? null : new OcrDigit(chr))
             .ToArray();
-        return Validate(characters);
+        return Validate(digits);
     }
 
-    public static OcrEntry ParseCharacters(TextRectangle input)
+    public static OcrEntry Parse(TextRectangle input)
     {
         var rawDigits = Enumerable.Range(0, int.MaxValue)
             .Select(digitNo => SelectDigit(input, digitNo))
@@ -31,17 +31,17 @@ public record OcrEntry
         AccountNumber = accountNumber;
     }
 
-    static OcrEntry Validate(OcrDigit?[] characters)
+    static OcrEntry Validate(OcrDigit?[] digits)
     {
-        var parsedCharacters = characters.Where(c => c != null).ToArray();
-        var isValid = parsedCharacters.Length == 9 && ChecksumIsValid(parsedCharacters!);
-        var accountNumber = new string(characters.Select(c => c?.Character ?? '?').ToArray());
+        var parsedDigits = digits.Where(c => c != null).ToArray();
+        var isValid = parsedDigits.Length == 9 && ChecksumIsValid(parsedDigits!);
+        var accountNumber = new string(digits.Select(d => d?.Character ?? '?').ToArray());
         return new OcrEntry(isValid, accountNumber);
     }
 
-    static bool ChecksumIsValid(IEnumerable<OcrDigit> parsedCharacters)
+    static bool ChecksumIsValid(IEnumerable<OcrDigit> parsedDigits)
     {
-        var digits = parsedCharacters.Select(c => c.Digit).ToArray();
+        var digits = parsedDigits.Select(c => c.Digit).ToArray();
 
         var sum =
             (digits[8] * 1) +

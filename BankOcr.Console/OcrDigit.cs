@@ -13,10 +13,11 @@ public record OcrDigit
         }
 
         Character = character;
+        Digit = int.Parse(Character.ToString());
     }
 
-    public char Character { get; init; }
-    public int Digit => int.Parse(Character.ToString());
+    public char Character { get; }
+    public int Digit { get; }
 
     public static OcrDigit? TryParse(TextRectangle digitText)
     {
