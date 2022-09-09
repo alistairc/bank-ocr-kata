@@ -7,8 +7,8 @@ class EntryValidation
     [Test]
     public void EntriesWithNineCharactersShouldBeValid()
     {
-        OcrEntry.FromString("000000000")
-            .ValidateAccountNumber()
+        OcrEntry.FromAccountNumber("000000000")
+            .IsValidAccountNumber
             .ShouldBe(true);
     }
 
@@ -17,8 +17,8 @@ class EntryValidation
     [TestCase(10)]
     public void EntriesOfWrongLengthShouldBeInvalid(int length)
     {
-        OcrEntry.FromString(new string('0', length))
-            .ValidateAccountNumber()
+        OcrEntry.FromAccountNumber(new string('0', length))
+            .IsValidAccountNumber
             .ShouldBe(false);
     }
 
@@ -30,8 +30,8 @@ class EntryValidation
     [TestCase("490867715")]
     public void EntriesWithValidChecksumShouldBeValid(string entryText)
     {
-        OcrEntry.FromString(entryText)
-            .ValidateAccountNumber()
+        OcrEntry.FromAccountNumber(entryText)
+            .IsValidAccountNumber
             .ShouldBe(true);
     }
 
@@ -40,9 +40,8 @@ class EntryValidation
     [TestCase("012345678")]
     public void EntriesWithInvalidChecksumShouldBeInvalid(string entryText)
     {
-        OcrEntry.FromString(entryText)
-            .ValidateAccountNumber()
+        OcrEntry.FromAccountNumber(entryText)
+            .IsValidAccountNumber
             .ShouldBe(false);
     }
-
 }
