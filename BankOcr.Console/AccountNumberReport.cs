@@ -9,7 +9,18 @@ public static class AccountNumberReport
 
     static string FormatEntry(OcrEntry entry)
     {
-        var validationSuffix = entry.IsValidAccountNumber ? "" : " ERR";
+        var validationSuffix = GetValidationSuffix(entry);
         return $"{entry.AccountNumber}{validationSuffix}";
+    }
+
+    static string GetValidationSuffix(OcrEntry entry)
+    {
+        return entry.ValidationStatus switch
+        {
+            EntryValidationStatus.Ok => string.Empty,
+            EntryValidationStatus.Illegible => " ILL",
+            EntryValidationStatus.Invalid => " ERR",
+            _ => throw new ArgumentOutOfRangeException(nameof(entry), entry.ValidationStatus.ToString())
+        };
     }
 }
