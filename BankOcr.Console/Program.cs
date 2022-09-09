@@ -1,24 +1,30 @@
-﻿using BankOcr.Console;
+﻿using System.Text;
+
+using BankOcr.Console;
 
 //This is missing any validation or proper error handling,
 //we assume success all the way.  It'll do for now!
 
-var sourceFile = args[0];
+var sourcePath = args[0];
+var outputPath = args[1];
 
-var inputLines = StreamLines(sourceFile);
-var output = Console.Out;
+var inputLines = StreamLines(sourcePath);
+
+using var outputWriter = new StreamWriter(File.OpenWrite(outputPath), Encoding.UTF8);
+var consoleOutput = Console.Out;
 
 var entries = OcrEntryFile.ParseEntries(inputLines);
 var lines = AccountNumberReport.ForEntries(entries);
 
 foreach (var line in lines)
 {
-    output.WriteLine(line);
+    consoleOutput.WriteLine(line);
+    outputWriter.WriteLine(line);
 }
 
-static IEnumerable<string> StreamLines(string sourceFile)
+static IEnumerable<string> StreamLines(string filePath)
 {
-    using var input = File.OpenText(sourceFile);
+    using var input = File.OpenText(filePath);
     var line = input.ReadLine();
     while (line != null)
     {
