@@ -61,4 +61,5 @@ public record TextRectangle
     public string MultiLineText { get; }
     public int Width { get; }
     public int Height  { get; }
+    public bool IsBlank => string.IsNullOrWhiteSpace(MultiLineText);
 }

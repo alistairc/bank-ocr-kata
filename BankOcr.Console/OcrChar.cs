@@ -3,6 +3,7 @@ namespace BankOcr.Console;
 public record OcrChar
 {
     public const int CharacterWidth = 3;
+    public const int CharacterHeight = 3;
 
     public OcrChar(char character)
     {
