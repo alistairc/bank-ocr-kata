@@ -35,4 +35,20 @@ class FormattingOutput
         output[0].ShouldEndWith(" ERR");
         output[1].ShouldNotEndWith(" ERR");
     }
+
+    [Test]
+    public void ShouldReportIllegibleNumbers()
+    {
+        var entries = new[]
+        {
+            OcrEntry.FromAccountNumber("123?567?9"), 
+            OcrEntry.FromAccountNumber("000000000")
+        };
+
+        var output = AccountNumberReport.ForEntries(entries).ToArray();
+
+        output.Length.ShouldBe(2);
+        output[0].ShouldEndWith(" ILL");
+        output[1].ShouldNotEndWith(" ILL");
+    }
 }
