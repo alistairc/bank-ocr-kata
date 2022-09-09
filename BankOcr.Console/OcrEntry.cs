@@ -1,6 +1,6 @@
 namespace BankOcr.Console;
 
-public record OcrEntry(OcrChar[] Characters)
+public record OcrEntry(OcrChar?[] Characters)
 {
     static readonly string Padding = new(' ', OcrChar.CharacterWidth);
 
@@ -19,23 +19,22 @@ public record OcrEntry(OcrChar[] Characters)
             .Select(digitNo => SelectTextForDigit(lines, digitNo))
             .TakeWhile(digitText => !string.IsNullOrWhiteSpace(digitText));
 
-        var parsedDigits = rawDigits
-            .Select(text => OcrChar.TryParse(text))
-            .Where(parsed => parsed != null);
+        var parsedDigits = rawDigits.Select(OcrChar.TryParse);
 
-        return new OcrEntry(parsedDigits.ToArray()!);
+        return new OcrEntry(parsedDigits.ToArray());
     }
 
-    public string AccountNumber => new string(Characters.Select(c => c.Character).ToArray());
+    public string AccountNumber => new string(Characters.Select(c => c?.Character ?? '?').ToArray());
+    public OcrChar[] ParsedCharacters => Characters.Where(c => c != null).ToArray()!;
 
     public bool ValidateAccountNumber()
     {
-        return Characters.Length == 9 && ChecksumIsValid();
+        return ParsedCharacters.Length == 9 && ChecksumIsValid();
     }
 
     bool ChecksumIsValid()
     {
-        var digits = Characters.Select(c => c.Digit).ToArray();
+        var digits = ParsedCharacters.Select(c => c.Digit).ToArray();
 
         var sum =
             (digits[8] * 1) +

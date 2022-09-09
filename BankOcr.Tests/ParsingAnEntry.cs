@@ -31,6 +31,19 @@ class ParsingAnEntry
     }
 
     [Test]
+    public void ShouldUseQuestionMarksForUnparsableDataInAccountNumber()
+    {
+        var input =
+            "    _  _     _ \n" +
+            "  ||_| _||_ |_ \n" +
+            "  ||_  _|| | _|\n";
+
+        var entry = OcrEntry.ParseCharacters(input);
+
+        entry.AccountNumber.ShouldBe("1?3?5");
+    }
+
+    [Test]
     public void ShouldParseASingleDigit()
     {
         var input =
