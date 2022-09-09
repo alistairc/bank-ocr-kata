@@ -12,7 +12,7 @@ class ParsingAnEntry
             "  | _| _||_||_ |_   ||_||_|\n" +
             "  ||_  _|  | _||_|  ||_| _|\n";
 
-        var entry = OcrEntry.ParseCharacters(TextRectangle.FromString(input));
+        var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
         entry.AccountNumber.ShouldBe("123456789");
     }
@@ -25,7 +25,7 @@ class ParsingAnEntry
             "  | _| _||_||_ |_   ||_||_|  | _| _||_||_ |_   ||_||_|\n" +
             "  ||_  _|  | _||_|  ||_| _|  ||_  _|  | _||_|  ||_| _|\n";
 
-        var entry = OcrEntry.ParseCharacters(TextRectangle.FromString(input));
+        var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
         entry.AccountNumber.ShouldBe("123456789123456789");
     }
@@ -38,7 +38,7 @@ class ParsingAnEntry
             "  ||_| _||_ |_ \n" +
             "  ||_  _|| | _|\n";
 
-        var entry = OcrEntry.ParseCharacters(TextRectangle.FromString(input));
+        var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
         entry.AccountNumber.ShouldBe("1?3?5");
     }
@@ -51,7 +51,7 @@ class ParsingAnEntry
             "  |\n" +
             "  |\n";
 
-        var entry = OcrEntry.ParseCharacters(TextRectangle.FromString(input));
+        var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
         entry.AccountNumber.ShouldBe("1");
     }
@@ -64,7 +64,7 @@ class ParsingAnEntry
             "\n" +
             "\n";
 
-        var entry = OcrEntry.ParseCharacters(TextRectangle.FromString(input));
+        var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
         entry.
         AccountNumber.ShouldBe(string.Empty);
@@ -79,7 +79,7 @@ class ParsingAnEntry
             " _|\n" +
             "|_\n";
 
-        var entry = OcrEntry.ParseCharacters(TextRectangle.FromString(input));
+        var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
         entry.AccountNumber.ShouldBe("2");
     }
@@ -92,7 +92,7 @@ class ParsingAnEntry
             " _|\n" +
             "|_      \n";
 
-        var entry = OcrEntry.ParseCharacters(TextRectangle.FromString(input));
+        var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
         entry.AccountNumber.ShouldBe("2");
     }
@@ -105,7 +105,7 @@ class ParsingAnEntry
             " _|\n" +
             "|_\n\n\n";
 
-        var entry = OcrEntry.ParseCharacters(TextRectangle.FromString(input));
+        var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
         entry.AccountNumber.ShouldBe("2");
     }

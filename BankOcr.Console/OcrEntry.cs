@@ -5,19 +5,19 @@ public record OcrEntry
     // Convenience factory method, mainly for tests
     public static OcrEntry FromAccountNumber(string entryText)
     {
-        var characters = entryText
-            .Select(chr => chr == '?' ? null : new OcrChar(chr))
+        var digits = entryText
+            .Select(chr => chr == '?' ? null : new OcrDigit(chr))
             .ToArray();
-        return Validate(characters);
+        return Validate(digits);
     }
 
-    public static OcrEntry ParseCharacters(TextRectangle input)
+    public static OcrEntry Parse(TextRectangle input)
     {
         var rawDigits = Enumerable.Range(0, int.MaxValue)
             .Select(digitNo => SelectDigit(input, digitNo))
             .TakeWhile(digitText => !digitText.IsBlank);
 
-        var parsedDigits = rawDigits.Select(OcrChar.TryParse);
+        var parsedDigits = rawDigits.Select(OcrDigit.TryParse);
 
         return Validate(parsedDigits.ToArray());
     }
@@ -31,17 +31,17 @@ public record OcrEntry
         AccountNumber = accountNumber;
     }
 
-    static OcrEntry Validate(OcrChar?[] characters)
+    static OcrEntry Validate(OcrDigit?[] digits)
     {
-        var parsedCharacters = characters.Where(c => c != null).ToArray();
-        var isValid = parsedCharacters.Length == 9 && ChecksumIsValid(parsedCharacters!);
-        var accountNumber = new string(characters.Select(c => c?.Character ?? '?').ToArray());
+        var parsedDigits = digits.Where(c => c != null).ToArray();
+        var isValid = parsedDigits.Length == 9 && ChecksumIsValid(parsedDigits!);
+        var accountNumber = new string(digits.Select(d => d?.Character ?? '?').ToArray());
         return new OcrEntry(isValid, accountNumber);
     }
 
-    static bool ChecksumIsValid(IEnumerable<OcrChar> parsedCharacters)
+    static bool ChecksumIsValid(IEnumerable<OcrDigit> parsedDigits)
     {
-        var digits = parsedCharacters.Select(c => c.Digit).ToArray();
+        var digits = parsedDigits.Select(c => c.Digit).ToArray();
 
         var sum =
             (digits[8] * 1) +
@@ -60,7 +60,7 @@ public record OcrEntry
     
     static TextRectangle SelectDigit(TextRectangle source, int digitNo)
     {
-        var startIndex = digitNo * OcrChar.CharacterWidth;
-        return source.Select(startIndex, 0, OcrChar.CharacterWidth, OcrChar.CharacterHeight);
+        var startIndex = digitNo * OcrDigit.CharacterWidth;
+        return source.Select(startIndex, 0, OcrDigit.CharacterWidth, OcrDigit.CharacterHeight);
     }
 }

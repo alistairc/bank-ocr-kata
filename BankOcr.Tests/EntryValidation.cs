@@ -5,7 +5,7 @@ namespace BankOcr.Tests;
 class EntryValidation
 {
     [Test]
-    public void EntriesWithNineCharactersShouldBeValid()
+    public void EntriesWithNineDigitsShouldBeValid()
     {
         OcrEntry.FromAccountNumber("000000000")
             .IsValidAccountNumber

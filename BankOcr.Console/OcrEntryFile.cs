@@ -6,6 +6,6 @@ public static class OcrEntryFile
     {
         return inputLines.Chunk(4)
             .Select(TextRectangle.FromLines)
-            .Select(OcrEntry.ParseCharacters);
+            .Select(OcrEntry.Parse);
     } 
 }
