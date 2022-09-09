@@ -12,6 +12,7 @@ class ParsingFromString
         selection.Height.ShouldBe(0);
         selection.Width.ShouldBe(0);
         selection.MultiLineText.ShouldBe(string.Empty);
+        selection.IsBlank.ShouldBeTrue();
     }
 
     [Test]
@@ -22,6 +23,7 @@ class ParsingFromString
         selection.Height.ShouldBe(1);
         selection.Width.ShouldBe(11);
         selection.MultiLineText.ShouldBe("hello world");
+        selection.IsBlank.ShouldBeFalse();
     }
 
     [Test]
@@ -32,6 +34,7 @@ class ParsingFromString
         selection.Height.ShouldBe(2);
         selection.Width.ShouldBe(5);
         selection.MultiLineText.ShouldBe("hello\nworld");
+        selection.IsBlank.ShouldBeFalse();
     }
 
     [Test]

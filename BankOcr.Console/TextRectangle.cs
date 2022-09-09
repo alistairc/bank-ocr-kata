@@ -25,11 +25,10 @@ public record TextRectangle
 
     public static TextRectangle FromLines(string[] lines)
     {
-        if (lines.Length == 0)
+        if (lines.Length==0)
         {
             return TextRectangle.Empty;
         }
-
         var width = lines.Max(line => line.Length);
         var height = lines.Length;
         var padded = lines.Select(line => line.PadRight(width)).ToArray();
