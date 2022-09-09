@@ -17,9 +17,9 @@ public record OcrChar
     public char Character { get; init; }
     public int Digit => int.Parse(Character.ToString());
 
-    public static OcrChar? TryParse(string digitText)
+    public static OcrChar? TryParse(TextRectangle digitText)
     {
-        var found = KnownDigits.TryGetValue(digitText, out var character);
+        var found = KnownDigits.TryGetValue(digitText.MultiLineText, out var character);
 
         return found ? new OcrChar(character) : null;
     }

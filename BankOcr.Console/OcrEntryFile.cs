@@ -8,7 +8,7 @@ public static class OcrEntryFile
         foreach (var entryLines in possibleEntries)
         {
             var entryText = string.Join('\n', entryLines);
-            var entry = OcrEntry.ParseCharacters(entryText);
+            var entry = OcrEntry.ParseCharacters(new TextRectangle(entryText));
             yield return entry;
         }
     } 

@@ -13,15 +13,15 @@ public record OcrEntry
         return Validate(characters);
     }
 
-    public static OcrEntry ParseCharacters(string input)
+    public static OcrEntry ParseCharacters(TextRectangle input)
     {
-        var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        var lines = input.MultiLineText.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
         var rawDigits = Enumerable.Range(0, int.MaxValue)
             .Select(digitNo => SelectTextForDigit(lines, digitNo))
             .TakeWhile(digitText => !string.IsNullOrWhiteSpace(digitText));
 
-        var parsedDigits = rawDigits.Select(OcrChar.TryParse);
+        var parsedDigits = rawDigits.Select(selection => OcrChar.TryParse(new TextRectangle(selection)));
 
         return Validate(parsedDigits.ToArray());
     }
