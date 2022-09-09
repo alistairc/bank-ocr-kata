@@ -9,8 +9,8 @@ class FormattingOutput
     {
         var entries = new[]
         {
-            OcrEntry.FromString("123456789"), 
-            OcrEntry.FromString("987654321")
+            OcrEntry.FromAccountNumber("123456789"), 
+            OcrEntry.FromAccountNumber("987654321")
         };
 
         var output = AccountNumberReport.ForEntries(entries).ToArray();
@@ -25,8 +25,8 @@ class FormattingOutput
     {
         var entries = new[]
         {
-            OcrEntry.FromString("123"), 
-            OcrEntry.FromString("000000000")
+            OcrEntry.FromAccountNumber("123"), 
+            OcrEntry.FromAccountNumber("000000000")
         };
 
         var output = AccountNumberReport.ForEntries(entries).ToArray();

@@ -9,7 +9,7 @@ public static class AccountNumberReport
 
     static string FormatEntry(OcrEntry entry)
     {
-        var validationSuffix = entry.ValidateAccountNumber() ? "" : " ERR";
+        var validationSuffix = entry.IsValidAccountNumber ? "" : " ERR";
         return $"{entry.AccountNumber}{validationSuffix}";
     }
 }

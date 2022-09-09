@@ -1,14 +1,16 @@
 namespace BankOcr.Console;
 
-public record OcrEntry(OcrChar[] Characters)
+public record OcrEntry
 {
     static readonly string Padding = new(' ', OcrChar.CharacterWidth);
 
     // Convenience factory method, mainly for tests
-    public static OcrEntry FromString(string entryText)
+    public static OcrEntry FromAccountNumber(string entryText)
     {
-        var characters = entryText.Select(chr => new OcrChar(chr)).ToArray();
-        return new OcrEntry(characters);
+        var characters = entryText
+            .Select(chr => chr == '?' ? null : new OcrChar(chr))
+            .ToArray();
+        return Validate(characters);
     }
 
     public static OcrEntry ParseCharacters(string input)
@@ -19,23 +21,31 @@ public record OcrEntry(OcrChar[] Characters)
             .Select(digitNo => SelectTextForDigit(lines, digitNo))
             .TakeWhile(digitText => !string.IsNullOrWhiteSpace(digitText));
 
-        var parsedDigits = rawDigits
-            .Select(text => OcrChar.TryParse(text))
-            .Where(parsed => parsed != null);
+        var parsedDigits = rawDigits.Select(OcrChar.TryParse);
 
-        return new OcrEntry(parsedDigits.ToArray()!);
+        return Validate(parsedDigits.ToArray());
     }
 
-    public string AccountNumber => new string(Characters.Select(c => c.Character).ToArray());
+    public bool IsValidAccountNumber { get; }
+    public string AccountNumber { get; } 
 
-    public bool ValidateAccountNumber()
+    OcrEntry(bool isValid, string accountNumber)
     {
-        return Characters.Length == 9 && ChecksumIsValid();
+        IsValidAccountNumber = isValid;
+        AccountNumber = accountNumber;
     }
 
-    bool ChecksumIsValid()
+    static OcrEntry Validate(OcrChar?[] characters)
     {
-        var digits = Characters.Select(c => c.Digit).ToArray();
+        var parsedCharacters = characters.Where(c => c != null).ToArray();
+        var isValid = parsedCharacters.Length == 9 && ChecksumIsValid(parsedCharacters!);
+        var accountNumber = new string(characters.Select(c => c?.Character ?? '?').ToArray());
+        return new OcrEntry(isValid, accountNumber);
+    }
+
+    static bool ChecksumIsValid(OcrChar[] parsedCharacters)
+    {
+        var digits = parsedCharacters.Select(c => c.Digit).ToArray();
 
         var sum =
             (digits[8] * 1) +
@@ -51,8 +61,7 @@ public record OcrEntry(OcrChar[] Characters)
         var checksum = sum % 11;
         return checksum == 0;
     }
-
-
+    
     static string SelectCharsForDigit(string line, int digitNo)
     {
         // it simplifies things if there's always some trailing space
