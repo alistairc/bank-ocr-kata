@@ -22,12 +22,12 @@ public record OcrEntry
         return Validate(parsedDigits.ToArray());
     }
 
-    public bool IsValidAccountNumber { get; }
+    public EntryValidationStatus ValidationStatus { get; }
     public string AccountNumber { get; } 
 
-    OcrEntry(bool isValid, string accountNumber)
+    OcrEntry(EntryValidationStatus validationStatus, string accountNumber)
     {
-        IsValidAccountNumber = isValid;
+        ValidationStatus = validationStatus;
         AccountNumber = accountNumber;
     }
 
@@ -35,8 +35,10 @@ public record OcrEntry
     {
         var parsedDigits = digits.Where(c => c != null).ToArray();
         var isValid = parsedDigits.Length == 9 && ChecksumIsValid(parsedDigits!);
+        var validationStatus = isValid ? EntryValidationStatus.Ok : EntryValidationStatus.Invalid;
+
         var accountNumber = new string(digits.Select(d => d?.Character ?? '?').ToArray());
-        return new OcrEntry(isValid, accountNumber);
+        return new OcrEntry(validationStatus, accountNumber);
     }
 
     static bool ChecksumIsValid(IEnumerable<OcrDigit> parsedDigits)

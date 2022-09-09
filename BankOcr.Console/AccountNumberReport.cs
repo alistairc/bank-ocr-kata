@@ -20,7 +20,7 @@ public static class AccountNumberReport
             return " ILL";
         }
 
-        if (!entry.IsValidAccountNumber)
+        if (entry.ValidationStatus == EntryValidationStatus.Invalid)
         {
             return " ERR";
         }
