@@ -1,10 +1,21 @@
 namespace BankOcr.Console;
 
-public static class AccountNumberReport
+public class AccountNumberReport
 {
-    public static IEnumerable<string> ForEntries(IEnumerable<OcrEntry> entries)
+    IEnumerable<OcrEntry> Entries { get; }
+
+    public AccountNumberReport(IEnumerable<OcrEntry> entries)
     {
-        return entries.Select(FormatEntry);
+        Entries = entries;
+    }
+
+    public void WriteTo(TextWriter writer)
+    {
+        var lines = Entries.Select(FormatEntry);
+        foreach (var line in lines)
+        {
+            writer.WriteLine(line);
+        }
     }
 
     static string FormatEntry(OcrEntry entry)

@@ -13,7 +13,7 @@ class FormattingOutput
             OcrEntry.FromAccountNumber("987654321")
         };
 
-        var output = AccountNumberReport.ForEntries(entries).ToArray();
+        var output = GetReportLines(entries);
 
         output.Length.ShouldBe(2);
         output[0].ShouldStartWith("123456789");
@@ -29,7 +29,7 @@ class FormattingOutput
             OcrEntry.FromAccountNumber("000000000")
         };
 
-        var output = AccountNumberReport.ForEntries(entries).ToArray();
+        var output = GetReportLines(entries);
 
         output.Length.ShouldBe(2);
         output[0].ShouldEndWith(" ERR");
@@ -45,10 +45,21 @@ class FormattingOutput
             OcrEntry.FromAccountNumber("000000000")
         };
 
-        var output = AccountNumberReport.ForEntries(entries).ToArray();
+        var output = GetReportLines(entries);
 
         output.Length.ShouldBe(2);
         output[0].ShouldEndWith(" ILL");
         output[1].ShouldNotEndWith(" ILL");
+    }
+
+    static string[] GetReportLines(IEnumerable<OcrEntry> entries)
+    {
+        var report = new AccountNumberReport(entries);
+
+        var writer = new StringWriter();
+        report.WriteTo(writer);
+
+        var reportText = writer.ToString().TrimEnd('\r','\n');
+        return reportText.Split(Environment.NewLine);
     }
 }

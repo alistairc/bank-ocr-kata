@@ -14,13 +14,10 @@ using var outputWriter = new StreamWriter(File.OpenWrite(outputPath), Encoding.U
 var consoleOutput = Console.Out;
 
 var entries = OcrEntryFile.ParseEntries(inputLines);
-var lines = AccountNumberReport.ForEntries(entries);
 
-foreach (var line in lines)
-{
-    consoleOutput.WriteLine(line);
-    outputWriter.WriteLine(line);
-}
+var report = new AccountNumberReport(entries);
+report.WriteTo(consoleOutput);
+report.WriteTo(outputWriter);
 
 static IEnumerable<string> StreamLines(string filePath)
 {
