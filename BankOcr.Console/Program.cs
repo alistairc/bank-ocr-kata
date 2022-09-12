@@ -8,27 +8,12 @@ using BankOcr.Console;
 var sourcePath = args[0];
 var outputPath = args[1];
 
-var inputLines = StreamLines(sourcePath);
-
+using var inputReader = File.OpenText(sourcePath);
 using var outputWriter = new StreamWriter(File.OpenWrite(outputPath), Encoding.UTF8);
-var consoleOutput = Console.Out;
 
-var entries = OcrEntryFile.ParseEntries(inputLines);
-var lines = AccountNumberReport.ForEntries(entries);
+var entries = new OcrEntryFile(inputReader)
+    .ParseEntries();
 
-foreach (var line in lines)
-{
-    consoleOutput.WriteLine(line);
-    outputWriter.WriteLine(line);
-}
-
-static IEnumerable<string> StreamLines(string filePath)
-{
-    using var input = File.OpenText(filePath);
-    var line = input.ReadLine();
-    while (line != null)
-    {
-        yield return line;
-        line = input.ReadLine();
-    }
-}
+var report = new AccountNumberReport(entries);
+report.WriteTo(Console.Out);
+report.WriteTo(outputWriter);

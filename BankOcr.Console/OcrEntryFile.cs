@@ -1,11 +1,29 @@
 ﻿namespace BankOcr.Console;
 
-public static class OcrEntryFile
+public class OcrEntryFile
 {
-    public static IEnumerable<OcrEntry> ParseEntries(IEnumerable<string> inputLines)
+    TextReader Source { get;  }
+
+    public OcrEntryFile(TextReader source)
     {
-        return inputLines.Chunk(4)
+        Source = source;
+    }
+
+    public IEnumerable<OcrEntry> ParseEntries()
+    {
+        return StreamLines(Source)
+            .Chunk(4)
             .Select(TextRectangle.FromLines)
             .Select(OcrEntry.Parse);
-    } 
+    }
+
+    static IEnumerable<string> StreamLines(TextReader reader)
+    {
+        var line = reader.ReadLine();
+        while (line != null)
+        {
+            yield return line;
+            line = reader.ReadLine();
+        }
+    }
 }
