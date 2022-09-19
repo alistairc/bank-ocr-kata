@@ -5,11 +5,10 @@ using BankOcr.Console;
 //This is missing any validation or proper error handling,
 //we assume success all the way.  It'll do for now!
 
-var sourcePath = args[0];
-var outputPath = args[1];
+var options = ProgramOptions.ParseArgs(args);
 
-using var inputReader = File.OpenText(sourcePath);
-using var outputWriter = new StreamWriter(File.OpenWrite(outputPath), Encoding.UTF8);
+using var inputReader = File.OpenText(options.SourcePath);
+using var outputWriter = new StreamWriter(File.OpenWrite(options.OutputPath), Encoding.UTF8);
 
 var entries = new OcrEntryFile(inputReader)
     .ParseEntries();
