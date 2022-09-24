@@ -1,9 +1,9 @@
-using System.Reflection.Metadata.Ecma335;
-
 namespace BankOcr.Console;
 
 public record OcrEntry
 {
+    const int RequiredDigits = 9;
+
     // Convenience factory method, mainly for tests
     public static OcrEntry FromAccountNumber(string entryText)
     {
@@ -62,19 +62,12 @@ public record OcrEntry
 
     static bool ChecksumIsValid(IReadOnlyCollection<OcrDigit> parsedDigits)
     {
-        if (parsedDigits.Count != 9) { return false; }
+        if (parsedDigits.Count != RequiredDigits) { return false; }
         var digits = parsedDigits.Select(c => c.Digit).ToArray();
 
-        var sum =
-            (digits[8] * 1) +
-            (digits[7] * 2) +
-            (digits[6] * 3) +
-            (digits[5] * 4) +
-            (digits[4] * 5) +
-            (digits[3] * 6) +
-            (digits[2] * 7) +
-            (digits[1] * 8) +
-            (digits[0] * 9);
+        var sum = digits
+            .Select((digit, index) => digit * (RequiredDigits - index))
+            .Sum();
 
         var checksum = sum % 11;
         return checksum == 0;
