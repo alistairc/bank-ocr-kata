@@ -14,6 +14,7 @@ class RunningTheProgramEndToEnd
     [OneTimeSetUp]
     public void RunEndToEnd()
     {
+        File.Delete(OutputFilePath);
         Result = RunProgramWithTestFile(SeveralEntries);
     }
 
