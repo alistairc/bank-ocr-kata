@@ -3,12 +3,11 @@ using System.Runtime.InteropServices;
 
 namespace BankOcr.Tests.IntegrationTests;
 
-class RunningTheProgram
+class RunningTheProgramEndToEnd
 {
     static readonly string Root = AppDomain.CurrentDomain.BaseDirectory;
     static readonly string SeveralEntries = $"{Root}/TestFiles/SeveralEntries.txt";
     static readonly string OutputFilePath = $"{Root}output.txt";
-
 
     ProgramResult Result { get; set; } = null!;
 
