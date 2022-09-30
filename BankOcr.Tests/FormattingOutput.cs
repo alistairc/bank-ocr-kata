@@ -9,7 +9,7 @@ class FormattingOutput
     {
         var entries = new[]
         {
-            OcrEntry.FromAccountNumber("123456789"), 
+            OcrEntry.FromAccountNumber("123456789"),
             OcrEntry.FromAccountNumber("987654321")
         };
 
@@ -25,7 +25,7 @@ class FormattingOutput
     {
         var entries = new[]
         {
-            OcrEntry.FromAccountNumber("123"), 
+            OcrEntry.FromAccountNumber("123"),
             OcrEntry.FromAccountNumber("000000000")
         };
 
@@ -41,7 +41,7 @@ class FormattingOutput
     {
         var entries = new[]
         {
-            OcrEntry.FromAccountNumber("123?567?9"), 
+            OcrEntry.FromAccountNumber("123?567?9"),
             OcrEntry.FromAccountNumber("000000000")
         };
 
@@ -59,7 +59,7 @@ class FormattingOutput
         var writer = new StringWriter();
         report.WriteTo(writer);
 
-        var reportText = writer.ToString().TrimEnd('\r','\n');
+        var reportText = writer.ToString().TrimEnd('\r', '\n');
         return reportText.Split(Environment.NewLine);
     }
 }

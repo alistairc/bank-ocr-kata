@@ -2,12 +2,12 @@ namespace BankOcr.Console;
 
 public class AccountNumberReport
 {
-    IEnumerable<OcrEntry> Entries { get; }
-
     public AccountNumberReport(IEnumerable<OcrEntry> entries)
     {
         Entries = entries;
     }
+
+    IEnumerable<OcrEntry> Entries { get; }
 
     public void WriteTo(TextWriter writer)
     {

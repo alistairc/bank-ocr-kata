@@ -10,7 +10,7 @@ class RunningTheProgram
     static readonly string OutputFilePath = $"{Root}output.txt";
 
 
-    ProgramResult Result { get; set; }
+    ProgramResult Result { get; set; } = null!;
 
     [OneTimeSetUp]
     public void RunEndToEnd()
@@ -38,8 +38,6 @@ class RunningTheProgram
         fileContents.ShouldContain("111111111 ERR");
         fileContents.ShouldContain("999999999 ERR");
     }
-
-    record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
 
     static ProgramResult RunProgramWithTestFile(string sourceFilePath)
     {
@@ -90,4 +88,6 @@ class RunningTheProgram
 
         return "BankOcr.Console";
     }
+
+    record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
 }

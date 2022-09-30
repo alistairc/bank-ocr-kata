@@ -4,7 +4,7 @@ namespace BankOcr.Tests;
 
 class ParsingEntriesFromAFile
 {
-    private const string ExampleSource =
+    const string ExampleSource =
         @"                           
   |  |  |  |  |  |  |  |  |
   |  |  |  |  |  |  |  |  |

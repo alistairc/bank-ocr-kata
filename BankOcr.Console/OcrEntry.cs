@@ -4,6 +4,15 @@ public record OcrEntry
 {
     const int RequiredDigits = 9;
 
+    OcrEntry(EntryValidationStatus validationStatus, string accountNumber)
+    {
+        ValidationStatus = validationStatus;
+        AccountNumber = accountNumber;
+    }
+
+    public EntryValidationStatus ValidationStatus { get; }
+    public string AccountNumber { get; }
+
     // Convenience factory method, mainly for tests
     public static OcrEntry FromAccountNumber(string entryText)
     {
@@ -22,15 +31,6 @@ public record OcrEntry
         var parsedDigits = rawDigits.Select(OcrDigit.TryParse);
 
         return Validate(parsedDigits.ToArray());
-    }
-
-    public EntryValidationStatus ValidationStatus { get; }
-    public string AccountNumber { get; } 
-
-    OcrEntry(EntryValidationStatus validationStatus, string accountNumber)
-    {
-        ValidationStatus = validationStatus;
-        AccountNumber = accountNumber;
     }
 
     static OcrEntry Validate(OcrDigit?[] digits)
@@ -72,7 +72,7 @@ public record OcrEntry
         var checksum = sum % 11;
         return checksum == 0;
     }
-    
+
     static TextRectangle SelectDigit(TextRectangle source, int digitNo)
     {
         var startIndex = digitNo * OcrDigit.CharacterWidth;

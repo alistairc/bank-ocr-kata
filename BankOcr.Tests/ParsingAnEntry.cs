@@ -66,8 +66,7 @@ class ParsingAnEntry
 
         var entry = OcrEntry.Parse(TextRectangle.FromString(input));
 
-        entry.
-        AccountNumber.ShouldBe(string.Empty);
+        entry.AccountNumber.ShouldBe(string.Empty);
     }
 
     [Test]

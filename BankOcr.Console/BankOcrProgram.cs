@@ -2,14 +2,14 @@ namespace BankOcr.Console;
 
 public class BankOcrProgram
 {
-    TextWriter StdOut { get; }
-    IStreamFinder StreamFinder { get; }
-
     public BankOcrProgram(IStreamFinder streamFinder, TextWriter stdOut)
     {
         StreamFinder = streamFinder;
         StdOut = stdOut;
     }
+
+    TextWriter StdOut { get; }
+    IStreamFinder StreamFinder { get; }
 
     public void Run(ProgramOptions options)
     {
