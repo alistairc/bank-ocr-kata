@@ -10,7 +10,7 @@ class RunningTheProgram
     static readonly string OutputFilePath = $"{Root}output.txt";
 
 
-    ProgramResult Result { get; set; }
+    ProgramResult Result { get; set; } = null!;
 
     [OneTimeSetUp]
     public void RunEndToEnd()
