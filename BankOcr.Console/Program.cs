@@ -4,7 +4,7 @@
 //we assume success all the way.  It'll do for now!
 
 var program = new BankOcrProgram(
-    new FileSystemStreamFinder(), 
+    new FileSystemStreamFinder(),
     Console.Out
 );
 

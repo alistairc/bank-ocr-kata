@@ -2,12 +2,12 @@
 
 public class OcrEntryFile
 {
-    TextReader Source { get;  }
-
     public OcrEntryFile(TextReader source)
     {
         Source = source;
     }
+
+    TextReader Source { get; }
 
     public IEnumerable<OcrEntry> ParseEntries()
     {

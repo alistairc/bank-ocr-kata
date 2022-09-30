@@ -39,8 +39,6 @@ class RunningTheProgram
         fileContents.ShouldContain("999999999 ERR");
     }
 
-    record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
-
     static ProgramResult RunProgramWithTestFile(string sourceFilePath)
     {
         var exeName = GetExeName();
@@ -90,4 +88,6 @@ class RunningTheProgram
 
         return "BankOcr.Console";
     }
+
+    record ProgramResult(int ExitCode, string StdOutText, string StdErrText);
 }

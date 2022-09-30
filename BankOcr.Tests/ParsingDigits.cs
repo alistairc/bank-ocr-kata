@@ -32,7 +32,7 @@ class ParsingDigits
     [Test]
     public void ShouldHandleParsingFailures()
     {
-        string digitLines =
+        var digitLines =
             "!!!\n" +
             "!!!\n" +
             "!!!";
