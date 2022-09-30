@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace BankOcr.Console;
 
 public class BankOcrProgram
@@ -20,7 +22,35 @@ public class BankOcrProgram
             .ParseEntries();
 
         var report = new AccountNumberReport(entries);
-        report.WriteTo(StdOut);
-        report.WriteTo(outputWriter);
+
+        report.WriteTo(new CompositeWriter(StdOut, outputWriter));
+    }
+
+    class CompositeWriter : TextWriter
+    {
+        public CompositeWriter(params TextWriter[] inners)
+        {
+            Inners = inners;
+        }
+
+        IReadOnlyCollection<TextWriter> Inners { get; }
+
+        public override Encoding Encoding
+        {
+            get
+            {
+                return Inners
+                    .Select(i => i.Encoding)
+                    .FirstOrDefault(Encoding.Default);
+            }
+        }
+
+        public override void Write(char value)
+        {
+            foreach (var writer in Inners)
+            {
+                writer.Write(value);
+            }
+        }
     }
 }
