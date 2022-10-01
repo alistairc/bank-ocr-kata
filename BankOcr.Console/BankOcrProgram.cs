@@ -16,14 +16,22 @@ public class BankOcrProgram
     public void Run(ProgramOptions options)
     {
         using var inputReader = StreamFinder.ReadText(options.SourcePath);
-        using var outputWriter = StreamFinder.WriteText(options.OutputPath);
+
 
         var entries = new OcrEntryFile(inputReader)
             .ParseEntries();
 
         var report = new AccountNumberReport(entries);
 
-        report.WriteTo(new CompositeWriter(StdOut, outputWriter));
+        if (options.OutputPath == null)
+        {
+            report.WriteTo(StdOut);
+        }
+        else
+        {
+            using var outputWriter = StreamFinder.WriteText(options.OutputPath);
+            report.WriteTo(new CompositeWriter(StdOut, outputWriter));
+        }
     }
 
     class CompositeWriter : TextWriter

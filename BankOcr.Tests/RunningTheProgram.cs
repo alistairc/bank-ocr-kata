@@ -25,6 +25,14 @@ public class RunningTheProgram
         sut.GetOutputFileText().ShouldBe("123456789" + Environment.NewLine);
     }
 
+    [Test]
+    public void OutputFileShouldBeOptional()
+    {
+        var sut = new InMemoryProgramSystem();
+        sut.RunProgramWithNoOutputFile();
+        sut.GetOutputFileText().ShouldBeNull();
+    }
+
     class InMemoryProgramSystem
     {
         StringWriter StdOut { get; } = new();
@@ -36,6 +44,14 @@ public class RunningTheProgram
 
             var program = new BankOcrProgram(StreamFinder, StdOut);
             program.Run(new ProgramOptions("input.txt", "output.txt"));
+        }
+
+        public void RunProgramWithNoOutputFile()
+        {
+            StreamFinder.SetupFile("input.txt", Input);
+
+            var program = new BankOcrProgram(StreamFinder, StdOut);
+            program.Run(new ProgramOptions("input.txt", null));
         }
 
         public string GetConsoleText()
