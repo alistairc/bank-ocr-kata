@@ -1,3 +1,5 @@
+using BankOcr.Console;
+
 namespace BankOcr.Tests.RunningTheProgram;
 
 public class WithValidArgs
@@ -16,6 +18,14 @@ public class WithValidArgs
         var sut = new InMemoryProgramSystem();
         sut.RunProgramWithValidInput();
         sut.GetOutputFileText().ShouldBe(InMemoryProgramSystem.ExpectedOutput);
+    }
+
+    [Test]
+    public void ShouldExitWithSuccessCode()
+    {
+        var sut = new InMemoryProgramSystem();
+        sut.RunProgramWithValidInput();
+        sut.ExitCode.ShouldBe(ExitCode.Success);
     }
 
     [Test]

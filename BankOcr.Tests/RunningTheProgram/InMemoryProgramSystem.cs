@@ -13,13 +13,14 @@ class InMemoryProgramSystem
 
         StringWriter StdOut { get; } = new();
         InMemoryStreamFinder StreamFinder { get; } = new();
+        public ExitCode ExitCode { get; private set; }
 
         public void RunProgramWithValidInput()
         {
             StreamFinder.SetupFile("input.txt", Input);
 
             var program = new BankOcrProgram(StreamFinder, StdOut);
-            program.Run(new ProgramOptions("input.txt", "output.txt"));
+            ExitCode = program.Run(new ProgramOptions("input.txt", "output.txt"));
         }
 
         public void RunProgramWithNoOutputFile()
@@ -27,7 +28,7 @@ class InMemoryProgramSystem
             StreamFinder.SetupFile("input.txt", Input);
 
             var program = new BankOcrProgram(StreamFinder, StdOut);
-            program.Run(new ProgramOptions("input.txt", null));
+            ExitCode = program.Run(new ProgramOptions("input.txt", null));
         }
 
         public string GetConsoleText()
@@ -38,5 +39,11 @@ class InMemoryProgramSystem
         public string? GetOutputFileText()
         {
             return StreamFinder.GetFile("output.txt");
+        }
+
+        public void RunProgramWithNoArgs()
+        {
+            var program = new BankOcrProgram(StreamFinder, StdOut);
+            ExitCode = program.Run(ProgramOptions.Invalid);
         }
     }
