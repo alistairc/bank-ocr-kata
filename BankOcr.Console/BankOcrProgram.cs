@@ -4,6 +4,8 @@ namespace BankOcr.Console;
 
 public class BankOcrProgram
 {
+    public const string UsageMessage = "BankOcr.Console <input file> [<output file]";
+
     public BankOcrProgram(IStreamFinder streamFinder, TextWriter stdOut)
     {
         StreamFinder = streamFinder;
@@ -13,17 +15,31 @@ public class BankOcrProgram
     TextWriter StdOut { get; }
     IStreamFinder StreamFinder { get; }
 
-    public void Run(ProgramOptions options)
+    public ExitCode Run(ProgramOptions options)
     {
+        if (!options.IsValid)
+        {
+            StdOut.WriteLine(UsageMessage);
+            return ExitCode.InvalidArgs;
+        }
         using var inputReader = StreamFinder.ReadText(options.SourcePath);
-        using var outputWriter = StreamFinder.WriteText(options.OutputPath);
+
 
         var entries = new OcrEntryFile(inputReader)
             .ParseEntries();
 
         var report = new AccountNumberReport(entries);
 
-        report.WriteTo(new CompositeWriter(StdOut, outputWriter));
+        if (options.OutputPath == null)
+        {
+            report.WriteTo(StdOut);
+        }
+        else
+        {
+            using var outputWriter = StreamFinder.WriteText(options.OutputPath);
+            report.WriteTo(new CompositeWriter(StdOut, outputWriter));
+        }
+        return ExitCode.Success;
     }
 
     class CompositeWriter : TextWriter
