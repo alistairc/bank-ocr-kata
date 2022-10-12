@@ -20,7 +20,7 @@ class InMemoryProgramSystem
             StreamFinder.SetupFile("input.txt", Input);
 
             var program = new BankOcrProgram(StreamFinder, StdOut);
-            ExitCode = program.Run(ProgramOptions.ParseArgs(new[] {"input.txt", "output.txt"}));
+            ExitCode = program.Run(new[] {"input.txt", "output.txt"});
         }
 
         public void RunProgramWithNoOutputFile()
@@ -28,7 +28,7 @@ class InMemoryProgramSystem
             StreamFinder.SetupFile("input.txt", Input);
 
             var program = new BankOcrProgram(StreamFinder, StdOut);
-            ExitCode = program.Run(ProgramOptions.ParseArgs(new[] {"input.txt"}));
+            ExitCode = program.Run(new[] {"input.txt"});
         }
 
         public string GetConsoleText()
@@ -44,6 +44,6 @@ class InMemoryProgramSystem
         public void RunProgramWithNoArgs()
         {
             var program = new BankOcrProgram(StreamFinder, StdOut);
-            ExitCode = program.Run(ProgramOptions.ParseArgs(Array.Empty<string>()));
+            ExitCode = program.Run(Array.Empty<string>());
         }
     }

@@ -5,5 +5,4 @@ var program = new BankOcrProgram(
     Console.Out
 );
 
-var options = ProgramOptions.ParseArgs(args);
-return (int)program.Run(options);
+return (int)program.Run(args);

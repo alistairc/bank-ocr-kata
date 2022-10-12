@@ -15,15 +15,15 @@ public class BankOcrProgram
     TextWriter StdOut { get; }
     IStreamFinder StreamFinder { get; }
 
-    public ExitCode Run(ProgramOptions options)
+    public ExitCode Run(string[] args)
     {
+        var options = ProgramOptions.ParseArgs(args);
         if (!options.IsValid)
         {
             StdOut.WriteLine(UsageMessage);
             return ExitCode.InvalidArgs;
         }
         using var inputReader = StreamFinder.ReadText(options.SourcePath);
-
 
         var entries = new OcrEntryFile(inputReader)
             .ParseEntries();
