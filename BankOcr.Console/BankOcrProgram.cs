@@ -4,7 +4,7 @@ namespace BankOcr.Console;
 
 public class BankOcrProgram
 {
-    public const string UsageMessage = "BankOcr.Console <input file> [<output file]";
+    public const string UsageMessage = "BankOcr.Console <input file> [<output file>]";
 
     public BankOcrProgram(IStreamFinder streamFinder, TextWriter stdOut)
     {
