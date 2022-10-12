@@ -8,7 +8,7 @@ record ProgramOptions
         OutputPath = outputPath;
         IsValid = isValid;
     }
-    
+
     public bool IsValid { get; }
     public string SourcePath { get; }
     public string? OutputPath { get; }
@@ -17,10 +17,10 @@ record ProgramOptions
     {
         if (commandLineArgs.Length < 1)
         {
-            return new ProgramOptions(isValid: false, sourcePath: null, outputPath: null);
+            return new ProgramOptions(false, null, null);
         }
         var sourcePath = commandLineArgs[0];
         var outputPath = commandLineArgs.Length > 1 ? commandLineArgs[1] : null;
-        return new ProgramOptions(isValid: true, sourcePath, outputPath);
+        return new ProgramOptions(true, sourcePath, outputPath);
     }
 }

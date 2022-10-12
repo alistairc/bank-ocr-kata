@@ -11,7 +11,7 @@ public class WithInvalidArgs
         sut.RunProgramWithNoArgs();
         sut.GetConsoleText().ShouldBe(BankOcrProgram.UsageMessage + Environment.NewLine);
     }
-    
+
     [Test]
     public void ShouldExitWithInvalidArgsCode()
     {
