@@ -1,23 +1,14 @@
 namespace BankOcr.Console;
 
-public record ProgramOptions
+record ProgramOptions
 {
-    public static ProgramOptions Invalid = new();
-
-    public ProgramOptions(string sourcePath, string? outputPath)
+    ProgramOptions(bool isValid, string? sourcePath, string? outputPath)
     {
-        SourcePath = sourcePath;
+        SourcePath = sourcePath!;
         OutputPath = outputPath;
-        IsValid = true;
+        IsValid = isValid;
     }
-
-    ProgramOptions()
-    {
-        IsValid = false;
-        SourcePath = null!;
-        OutputPath = null;
-    }
-
+    
     public bool IsValid { get; }
     public string SourcePath { get; }
     public string? OutputPath { get; }
@@ -26,10 +17,10 @@ public record ProgramOptions
     {
         if (commandLineArgs.Length < 1)
         {
-            return new ProgramOptions();
+            return new ProgramOptions(isValid: false, sourcePath: null, outputPath: null);
         }
         var sourcePath = commandLineArgs[0];
         var outputPath = commandLineArgs.Length > 1 ? commandLineArgs[1] : null;
-        return new ProgramOptions(sourcePath, outputPath);
+        return new ProgramOptions(isValid: true, sourcePath, outputPath);
     }
 }
